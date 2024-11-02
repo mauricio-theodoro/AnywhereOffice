@@ -24,6 +24,7 @@
                 </li>
             </ul>
 
+            <!-- Menu exibido quando o usuário está autenticado -->
             <ul class="navbar-nav" sec:authorize="isAuthenticated()">
                 <li class="nav-item dropdown">
                     <a class="nav-link dropdown-toggle text-dark" href="/" role="button" data-bs-toggle="dropdown">
@@ -31,8 +32,11 @@
                     </a>
                     <ul class="dropdown-menu">
                         <li><a class="dropdown-item" href="/profile">Perfil</a></li>
-                        <li><a class="dropdown-item" href="/">Agenda</a></li>
+                        <li><a class="dropdown-item" href="/agenda">Agenda</a></li>
                         <li><a class="dropdown-item" href="/arquivos">Arquivos</a></li>
+                        <li class="nav-item" sec:authorize="hasRole('SUPERVISOR') or hasRole('ADMIN')">
+                            <a class="nav-link text-dark" href="/tasks">Tarefas dos Funcionários</a>
+                        </li>
                     </ul>
                 </li>
                 <li class="nav-item">
@@ -43,9 +47,10 @@
                 </li>
             </ul>
 
+            <!-- Menu exibido quando o usuário NÃO está autenticado -->
             <ul class="navbar-nav" sec:authorize="!isAuthenticated()">
                 <li class="nav-item">
-                    <a href="/register" class="btn btn-outline-primary me-2">Registre-se</a>
+                    <a href="/companyRegister" class="btn btn-outline-primary me-2">Registre-se</a>
                 </li>
                 <li class="nav-item">
                     <a href="/login" class="btn btn-primary">Entrar</a>

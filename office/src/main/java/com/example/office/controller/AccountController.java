@@ -16,6 +16,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 
 import javax.naming.Binding;
 import java.io.Serial;
+import java.time.LocalDateTime;
 import java.util.Date;
 
 @Controller
@@ -70,7 +71,7 @@ public class AccountController {
             newUser.setAddress(registerDTO.getAddress());
             newUser.setPhone(registerDTO.getPhone());
             newUser.setRole("client");
-            newUser.setCreatedAt(new Date());
+            newUser.setCreatedAt(LocalDateTime.now());
             newUser.setPassword(bCryptEcoder.encode(registerDTO.getPassword()));
 
             repo.save(newUser);

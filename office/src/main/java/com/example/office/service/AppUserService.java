@@ -43,4 +43,8 @@ public class AppUserService implements UserDetailsService {
 
         throw new RuntimeException("Usuário não autenticado");
     }
+
+    public AppUser findByEmail(String email) {
+        return repo.findByEmail(email);
+    }
 }

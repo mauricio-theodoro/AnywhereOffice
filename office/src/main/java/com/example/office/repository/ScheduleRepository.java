@@ -14,11 +14,19 @@ import java.util.List;
 @Repository
 public interface ScheduleRepository extends JpaRepository<Schedule, Long> {
 
+    // Filtra as tarefas de um usuário por uma data específica
+    List<Schedule> findByUserAndDate(AppUser user, LocalDateTime date);
+
     // 1. Busca todas as tarefas de uma empresa específica
     List<Schedule> findByCompany(Company company);
 
     // 2. Busca todas as tarefas para um usuário específico (AppUser)
     List<Schedule> findByUser(AppUser user);
+
+
+    List<Schedule> findByUserId(Long userId);
+
+    List<Schedule> findByUserIdAndDate(Long userId, LocalDateTime date);
 
     // 3. Busca todas as tarefas em um intervalo de datas específico
     List<Schedule> findByDateBetween(LocalDateTime startDate, LocalDateTime endDate);
@@ -47,4 +55,6 @@ public interface ScheduleRepository extends JpaRepository<Schedule, Long> {
 
     // 10. Lista todas as tarefas de um usuário (AppUser), ordenadas pela data
     List<Schedule> findByUserOrderByDateAsc(AppUser user);
+
+    List<Schedule> findByUserIdAndDateBetween(Long userId, LocalDateTime startDate, LocalDateTime endDate);
 }

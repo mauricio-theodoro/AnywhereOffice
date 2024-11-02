@@ -1,11 +1,11 @@
 package com.example.office.model;
 
 import jakarta.persistence.*;
-
-import java.util.Date;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
 
 @Entity
-@Table(name="users")
+@Table(name = "users")
 public class AppUser {
 
     @Id
@@ -20,11 +20,36 @@ public class AppUser {
 
     private String phone;
     private String address;
-    private String password;
-    private String role;
-    private Date createdAt;
-    private Date birthday;
 
+    @Column(nullable = false)
+    private String password;
+
+    private String role;
+
+    @Column(nullable = false)
+    private LocalDateTime createdAt;
+
+    private LocalDate birthday;
+
+    // Construtor padrão
+    public AppUser() {
+        this.createdAt = LocalDateTime.now(); // Define a data de criação como agora por padrão
+    }
+
+    // Construtor completo (opcional)
+    public AppUser(String firstName, String lastName, String email, String phone, String address, String password, String role, LocalDate birthday) {
+        this.firstName = firstName;
+        this.lastName = lastName;
+        this.email = email;
+        this.phone = phone;
+        this.address = address;
+        this.password = password;
+        this.role = role;
+        this.createdAt = LocalDateTime.now(); // Define a data de criação como agora
+        this.birthday = birthday;
+    }
+
+    // Getters e setters
     public Long getId() {
         return id;
     }
@@ -89,19 +114,34 @@ public class AppUser {
         this.role = role;
     }
 
-    public Date getCreatedAt() {
+    public LocalDateTime getCreatedAt() {
         return createdAt;
     }
 
-    public void setCreatedAt(Date createdAt) {
+    public void setCreatedAt(LocalDateTime createdAt) {
         this.createdAt = createdAt;
     }
 
-    public Date getBirthday() {
+    public LocalDate getBirthday() {
         return birthday;
     }
 
-    public void setBirthday(Date birthday) {
+    public void setBirthday(LocalDate birthday) {
         this.birthday = birthday;
+    }
+
+    @Override
+    public String toString() {
+        return "AppUser{" +
+                "id=" + id +
+                ", firstName='" + firstName + '\'' +
+                ", lastName='" + lastName + '\'' +
+                ", email='" + email + '\'' +
+                ", phone='" + phone + '\'' +
+                ", address='" + address + '\'' +
+                ", role='" + role + '\'' +
+                ", createdAt=" + createdAt +
+                ", birthday=" + birthday +
+                '}';
     }
 }

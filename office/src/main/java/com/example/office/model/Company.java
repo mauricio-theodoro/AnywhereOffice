@@ -1,6 +1,8 @@
 package com.example.office.model;
 
 import jakarta.persistence.*;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+
 import java.time.LocalDateTime;
 import java.util.List;
 
@@ -29,6 +31,12 @@ public class Company {
 
     @OneToMany(mappedBy = "company", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Schedule> schedules;
+
+    @Column(nullable = false)
+    private String password;
+
+    @Column(nullable = false, columnDefinition = "VARCHAR(50) DEFAULT 'ADMIN'")
+    private String role = "ADMIN"; // Nova propriedade role com valor padrão
 
     @PrePersist
     protected void onCreate() {
@@ -91,5 +99,22 @@ public class Company {
 
     public void setSchedules(List<Schedule> schedules) {
         this.schedules = schedules;
+    }
+
+    public void setPassword(String password) {
+        BCryptPasswordEncoder encoder = new BCryptPasswordEncoder();
+        this.password = encoder.encode(password);
+    }
+
+    public String getPassword() {
+        return password;
+    }
+
+    public String getRole() {
+        return role; // Getter para a role
+    }
+
+    public void setRole(String role) {
+        this.role = role; // Setter para a role
     }
 }
