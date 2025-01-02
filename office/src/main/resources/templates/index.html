@@ -5,63 +5,417 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>AnyWhereOffice</title>
+
+    <!-- Inclusão do CSS do Bootstrap para estilização -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
+    <link rel="stylesheet" href="./assets/css/main.css"> <!-- CSS personalizado -->
+
+    <!-- Inclusão de ícones do Google Fonts -->
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
 </head>
 <body>
-<nav class="navbar navbar-expand-lg bg-body-tertiary">
-    <div class="container-fluid">
-        <a class="navbar-brand" href="/">Anywhere Office</a>
-        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
-            <span class="navbar-toggler-icon"></span>
-        </button>
-        <div class="collapse navbar-collapse" id="navbarSupportedContent">
-            <ul class="navbar-nav me-auto mb-2 mb-lg-0">
-                <li class="nav-item">
-                    <a class="nav-link text-dark" href="/">Inicio</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link text-dark" href="/contact">Contato</a>
-                </li>
-            </ul>
-
-            <!-- Menu exibido quando o usuário está autenticado -->
-            <ul class="navbar-nav" sec:authorize="isAuthenticated()">
-                <li class="nav-item dropdown">
-                    <a class="nav-link dropdown-toggle text-dark" href="/" role="button" data-bs-toggle="dropdown">
-                        User
-                    </a>
-                    <ul class="dropdown-menu">
-                        <li><a class="dropdown-item" href="/profile">Perfil</a></li>
-                        <li><a class="dropdown-item" href="/agenda">Agenda</a></li>
-                        <li><a class="dropdown-item" href="/arquivos">Arquivos</a></li>
-                        <li class="nav-item" sec:authorize="hasRole('SUPERVISOR') or hasRole('ADMIN')">
-                            <a class="nav-link text-dark" href="/tasks">Tarefas dos Funcionários</a>
+<header>
+    <div class="container" id="nav-container">
+        <!-- Navegação principal -->
+        <nav class="navbar navbar-expand-lg fixed-top">
+            <!-- Logo e link para a página inicial -->
+            <a class="navbar-brand" href="index.html">
+                <img id="logo" src="assets/img/logo_any.png" alt="Anywhere Office"> Anywhere Office
+            </a>
+            <!-- Botão de toggle para menu em dispositivos menores -->
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent"
+                    aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse justify-content-end" id="navbarSupportedContent">
+                <div class="navbar-nav">
+                    <!-- Links de navegação principais -->
+                    <a class="nav-item nav-link" href="#nav-container">Inicio</a>
+                    <a class="nav-item nav-link" href="#invite-area">Contato</a>
+                    <a class="nav-item nav-link" href="/blog">Blog</a>
+                </div>
+                <!-- Mostrar botões específicos com base na autenticação -->
+                <ul class="navbar-nav" sec:authorize="isAuthenticated()">
+                    <li class="nav-item dropdown">
+                        <!-- Menu dropdown para o usuário autenticado -->
+                        <a class="nav-link dropdown-toggle" href="/" role="button" data-bs-toggle="dropdown">
+                            User
+                        </a>
+                        <ul class="dropdown-menu">
+                            <li><a class="dropdown-item" href="/profile">Perfil</a></li>
+                            <li><a class="dropdown-item" href="/agenda">Agenda</a></li>
+                            <li><a class="dropdown-item" href="/arquivos">Arquivos</a></li>
+                        </ul>
+                    </li>
+                </ul>
+                <div class="buttons-bar">
+                    <!-- Botões de Registro e Login quando o usuário não está autenticado -->
+                    <ul class="navbar-nav" sec:authorize="!isAuthenticated()">
+                        <li class="nav-item">
+                            <a href="/companyRegister" class="btn btn-primary me-2">Registre-se</a>
+                        </li>
+                        <li class="nav-item">
+                            <a href="/login" class="btn btn-primary">Entrar</a>
                         </li>
                     </ul>
-                </li>
-                <li class="nav-item">
-                    <form method="post" action="/logout">
-                        <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}" />
-                        <button type="submit" class="btn btn-danger">Logout</button>
-                    </form>
-                </li>
-            </ul>
+                    <!-- Botão de Logout apenas se o usuário estiver logado -->
+                    <ul class="navbar-nav" sec:authorize="isAuthenticated()">
+                        <li class="nav-item">
+                            <form method="post" action="/logout">
+                                <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}" />
+                                <button type="submit" class="btn btn-danger">Logout</button>
+                            </form>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </nav>
+    </div>
+</header>
 
-            <!-- Menu exibido quando o usuário NÃO está autenticado -->
-            <ul class="navbar-nav" sec:authorize="!isAuthenticated()">
-                <li class="nav-item">
-                    <a href="/companyRegister" class="btn btn-outline-primary me-2">Registre-se</a>
-                </li>
-                <li class="nav-item">
-                    <a href="/login" class="btn btn-primary">Entrar</a>
-                </li>
-            </ul>
+<main>
+    <div class="container-fluid">
+        <!-- Carrossel de imagens -->
+        <div id="mainSlider" class="carousel slide" data-bs-ride="carousel">
+            <!-- Indicadores do carrossel -->
+            <ol class="carousel-indicators">
+                <li data-bs-target="#mainSlider" data-bs-slide-to="0" class="active"></li>
+                <li data-bs-target="#mainSlider" data-bs-slide-to="1"></li>
+                <li data-bs-target="#mainSlider" data-bs-slide-to="2"></li>
+                <li data-bs-target="#mainSlider" data-bs-slide-to="3"></li>
+            </ol>
+            <div class="carousel-inner">
+                <!-- Item ativo do carrossel -->
+                <div class="carousel-item active">
+                    <img src="assets/img/cadeira-vibes.jpg" class="d-block w-100" alt="text">
+                    <div class="carousel-caption d-none d-md-block">
+                        <h2>Produtividade sem fronteiras. Trabalhe de onde estiver!</h2>
+                        <p>O remoto não é onde você trabalha, é como você trabalha!</p>
+                        <a href="/blog" class="main-btn">Ler mais</a>
+                    </div>
+                </div>
+                <!-- Outros itens do carrossel -->
+                <div class="carousel-item">
+                    <img src="assets/img/dark-vibes.jpg" class="d-block w-100" alt="text">
+                    <div class="carousel-caption d-none d-md-block">
+                        <h2>Transforme sua casa no escritório ideal: pratique o home office!</h2>
+                        <p>O remoto não é onde você trabalha, é como você trabalha!</p>
+                        <a href="/blog" class="main-btn">Ler mais</a>
+                    </div>
+                </div>
+                <div class="carousel-item">
+                    <img src="assets/img/office-complete.jpg" class="d-block w-100" alt="text">
+                    <div class="carousel-caption d-none d-md-block">
+                        <h2>Transforme sua rotina, trabalhe no seu espaço.</h2>
+                        <p>O remoto não é onde você trabalha, é como você trabalha!</p>
+                        <a href="/blog" class="main-btn">Ler mais</a>
+                    </div>
+                </div>
+                <div class="carousel-item">
+                    <img src="assets/img/transito.jpg" class="d-block w-100" alt="text">
+                    <div class="carousel-caption d-none d-md-block">
+                        <h2>Menos deslocamento, mais produtividade.</h2>
+                        <p>O remoto não é onde você trabalha, é como você trabalha!</p>
+                        <a href="/blog" class="main-btn">Ler mais</a>
+                    </div>
+                </div>
+            </div>
+            <!-- Controles do carrossel para navegar entre os slides -->
+            <a href="#mainSlider" class="carousel-control-prev" role="button" data-bs-slide="prev">
+                <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                <span class="visually-hidden">Previous</span>
+            </a>
+            <a href="#mainSlider" class="carousel-control-next" role="button" data-bs-slide="next">
+                <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                <span class="visually-hidden">Next</span>
+            </a>
         </div>
     </div>
-</nav>
-<div class="container py-5">
-    <h1 class="text-center">Hello, world!</h1>
+</main>
+<!-- Sobre -->
+<!-- Sobre -->
+<div id="about-area">
+    <div class="container">
+        <div class="row">
+            <div class="col-12">
+                <h3 class="main-title">Sobre a Anywhere Office</h3> <!-- Título principal da seção "Sobre" -->
+            </div>
+            <div class="col-md-6">
+                <img class="img-fluid" src="assets/img/note.jpg" alt="Home Office"> <!-- Imagem representativa da seção -->
+            </div>
+            <div class="col-md-6">
+                <h3 class="about-title">Transformação Digital no Ambiente Corporativo</h3> <!-- Título sobre os benefícios do home office -->
+                <p>A proposta da Anywhere Office é incentivar empresas de todos os tamanhos a adotarem o modelo de trabalho remoto. Essa transformação busca melhorar a qualidade de vida dos colaboradores, reduzir custos operacionais e minimizar os impactos ambientais, como a poluição e o congestionamento nas grandes cidades.</p>
+                <p>O trabalho remoto permite uma maior flexibilidade, tornando possível o equilíbrio entre vida profissional e pessoal, além de contribuir para um ambiente corporativo mais sustentável e eficiente. As empresas que adotam o home office podem atrair e reter talentos, melhorar a produtividade e reduzir o impacto no trânsito e no meio ambiente.</p>
+                <p>Nosso objetivo é proporcionar informações, orientações e soluções práticas para implementar o home office de forma eficaz e sustentável, ajudando empresas a atingirem suas metas enquanto contribuem para o bem-estar social e ambiental.</p>
+                <p>Veja os diferenciais do home office:</p>
+                <ul id="about-list"> <!-- Lista dos diferenciais -->
+                    <li><i id="check" class="material-icons">check</i>Redução de custos operacionais com infraestrutura física.</li>
+                    <li><i id="check" class="material-icons">check</i>Aumento da produtividade ao evitar o tempo perdido no trânsito.</li>
+                    <li><i id="check" class="material-icons">check</i>Promoção de um ambiente de trabalho mais flexível e colaborativo.</li>
+                    <li><i id="check" class="material-icons">check</i>Contribuição para a redução das emissões de gases poluentes.</li>
+                    <li><i id="check" class="material-icons">check</i>Maior atração e retenção de talentos em um mercado competitivo.</li>
+                </ul>
+            </div>
+        </div>
+    </div>
 </div>
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
+
+<!-- Serviços -->
+<div id="services-area">
+    <div class="container">
+        <div class="row">
+            <div class="col-12">
+                <h3 class="main-title">Nossos Serviços</h3> <!-- Título da seção de serviços -->
+            </div>
+            <!-- Cada "service-box" representa um serviço oferecido -->
+            <div class="col-md-4 service-box">
+                <i id="payments" class="material-icons">payments</i>
+                <h4>Benefícios Econômicos</h4>
+                <p>O home office reduz os custos com transporte e infraestrutura física, permitindo que as empresas economizem e aumentem seus lucros.</p>
+            </div>
+            <div class="col-md-4 service-box">
+                <i id="groups" class="material-icons">groups</i>
+                <h4>Benefícios Sociais</h4>
+                <p>Melhora a qualidade de vida dos colaboradores, proporcionando mais tempo para a família e atividades pessoais, além de reduzir o estresse causado pelo trânsito.</p>
+            </div>
+            <div class="col-md-4 service-box">
+                <i id="health_and_safety" class="material-icons">health_and_safety</i>
+                <h4>Saúde e Bem-estar</h4>
+                <p>Com a redução do tempo gasto no trânsito, os colaboradores têm mais tempo para cuidar da saúde física e mental, melhorando o desempenho no trabalho.</p>
+            </div>
+            <div class="col-md-4 service-box">
+                <i id="eco" class="material-icons">eco</i>
+                <h4>Sustentabilidade Ambiental</h4>
+                <p>Ao reduzir a necessidade de deslocamento diário, o home office diminui a emissão de gases poluentes, contribuindo para um ambiente mais saudável e sustentável.</p>
+            </div>
+            <div class="col-md-4 service-box">
+                <i id="compost" class="material-icons">compost</i>
+                <h4>Inovação e Tecnologia</h4>
+                <p>O desenvolvimento de ferramentas de gestão e comunicação permite que empresas implementem o home office de forma eficiente, com monitoramento e controle em tempo real.</p>
+            </div>
+            <div class="col-md-4 service-box">
+                <i id="attach_money" class="material-icons">attach_money</i>
+                <h4>Redução de Custos com Infraestrutura</h4>
+                <p>Empresas que adotam o home office economizam com aluguel, manutenção de escritórios e transporte, permitindo um reinvestimento em outras áreas do negócio.</p>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<!-- Slogan -->
+<div id="slogan-area">
+    <div class="container">
+        <div class="row">
+            <div class="col">
+                <div id="sloganA"></div> <!-- Espaço para o slogan, se necessário -->
+                <p>O remoto não é onde você trabalha, é como você trabalha!</p> <!-- Texto do slogan -->
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Time -->
+<div>
+    <div id="team-area">
+        <div class="container">
+            <div class="row">
+                <div class="col-12">
+                    <h3 class="main-title">Time</h3> <!-- Título da seção de equipe -->
+                </div>
+                <!-- Cada coluna representa um membro da equipe -->
+                <div class="col-md-3">
+                    <div class="card">
+                        <img src="assets/img/team/ana.jpeg" class="card-img-top" alt="imagem do Colaborador 1"> <!-- Imagem do colaborador -->
+                        <div class="card-body">
+                            <h5 class="card-title">Ana Cristina</h5> <!-- Nome do colaborador -->
+                            <p class="card-text">Front-end</p> <!-- Cargo do colaborador -->
+                        </div>
+                    </div>
+                </div>
+                <!-- Repetir para os demais colaboradores -->
+                <div class="col-md-3">
+                    <div class="card">
+                        <img src="assets/img/team/christyanresized.png" class="card-img-top" alt="imagem do Colaborador 2">
+                        <div class="card-body">
+                            <h5 class="card-title">Christyan Bernardo</h5>
+                            <p class="card-text">Banco de Dados</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-3">
+                    <div class="card">
+                        <img src="assets/img/team/gleiverson.jpeg" class="card-img-top" alt="imagem do Colaborador 3">
+                        <div class="card-body">
+                            <h5 class="card-title">Gleiverson Ferreira</h5>
+                            <p class="card-text">Back-end</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-3">
+                    <div class="card">
+                        <img src="assets/img/team/kevin.jpeg" class="card-img-top" alt="imagem do Colaborador 4">
+                        <div class="card-body">
+                            <h5 class="card-title">Kevin Thiago</h5>
+                            <p class="card-text">Front-end</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-3">
+                    <div class="card">
+                        <img src="assets/img/team/luana.jpg" class="card-img-top" alt="imagem do Colaborador 5">
+                        <div class="card-body">
+                            <h5 class="card-title">Luana Maciel</h5>
+                            <p class="card-text">Pesquisa</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-3">
+                    <div class="card">
+                        <img src="assets/img/team/mauricio.jpeg" class="card-img-top" alt="imagem do Colaborador 6">
+                        <div class="card-body">
+                            <h5 class="card-title">Maurício Theodoro</h5>
+                            <p class="card-text">Back-end</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-3">
+                    <div class="card">
+                        <img src="assets/img/team/Rayanne.jpeg" class="card-img-top" alt="imagem do Colaborador 7">
+                        <div class="card-body">
+                            <h5 class="card-title">Rayane de Oliveira</h5>
+                            <p class="card-text">Pesquisa</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-3">
+                    <div class="card">
+                        <img src="assets/img/team/vitor.jpeg" class="card-img-top" alt="imagem do Colaborador 8">
+                        <div class="card-body">
+                            <h5 class="card-title">Vitor Augusto</h5>
+                            <p class="card-text">Back-end</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Convite -->
+<div id="invite-area"> <!-- Área de convite -->
+    <div class="container-fluid"> <!-- Contêiner de largura total -->
+        <div class="row"> <!-- Linha para organizar colunas -->
+            <div class="col-md-6 invite-box" id="company-img"> <!-- Coluna para imagem da empresa -->
+                <!-- Aqui pode ser adicionada uma imagem ou conteúdo relacionado -->
+            </div>
+            <div class="col-md-6 invite-box" id="pattern-img"> <!-- Coluna para conteúdo do convite -->
+                <h4>Quer conhecer e aprender mais?</h4> <!-- Título do convite -->
+                <p>Tenha acesso ao conteúdo completo!</p> <!-- Mensagem de convite -->
+                <p>Descubra insights, dicas e informações valiosas que irão transformar sua visão e ampliar seus horizontes. Não perca a oportunidade de acessar materiais cuidadosamente elaborados para enriquecer sua jornada.</p> <!-- Descrição adicional -->
+                <p>Clique no botão e se inscreva!</p> <!-- Chamada à ação -->
+                <a href="/blog" class="main-btn" id="invite-btn">Blog</a> <!-- Botão para inscrição -->
+                <a href="/companyRegister" class="main-btn" id="invite-btn">PLataforma</a> <!-- Botão para inscrição -->
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Contato -->
+<div id="contact-area"> <!-- Área de contato -->
+    <div class="container"> <!-- Contêiner -->
+        <div class="row"> <!-- Linha para organizar colunas -->
+            <div class="col-lg-6 col-md-12"> <!-- Coluna para informações de contato -->
+                <div id="sloganA">
+                    <h3 class="main-title">Contato</h3> <!-- Título da seção de compromisso -->
+                </div>
+                <p>Entre em contato conosco para tirar suas dúvidas ou obter mais informações pelos meios abaixo!</p> <!-- Descrição sobre o compromisso -->
+                <p><strong>Email:</strong> contato@anywhereoffice.com</p> <!-- Informação de contato por email -->
+                <p><strong>Telefone:</strong> +55 31 0000-0000</p> <!-- Informação de contato por telefone -->
+            </div>
+            <div class="col-lg-6 col-md-12 d-flex justify-content-lg-end align-items-center"> <!-- Coluna para redes sociais -->
+                <div class="social-links"> <!-- Links para redes sociais -->
+                    <a href="#"><img src="assets/img/icons/instagram_2111463.png" alt="Icone Instagram"></a> <!-- Link para Instagram -->
+                    <a href="#"><img src="assets/img/icons/whatsapp_2504957.png" alt="Icone Whatsapp"></a> <!-- Link para WhatsApp -->
+                    <a href="#"><img src="assets/img/icons/gmail_2991144.png" alt="Icone Gmail"></a> <!-- Link para Gmail -->
+                    <a href="#"><img src="assets/img/icons/linkedin_2504923.png" alt="Icone LinkedIn"></a> <!-- Link para LinkedIn -->
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+</main> <!-- Fim do elemento main -->
+<!-- Footer -->
+<footer id="footer" class="footer dark-background"> <!-- Rodapé da página com fundo escuro -->
+
+    <div class="footer-top"> <!-- Topo do rodapé -->
+        <div class="container"> <!-- Contêiner do rodapé -->
+            <div class="row gy-4"> <!-- Linha com espaçamento entre colunas -->
+                <div class="col-lg-4 col-md-6 footer-about"> <!-- Coluna para informações sobre a empresa -->
+                    <a href="/" class="logo d-flex align-items-center"> <!-- Logo da empresa -->
+                        <span class="sitename">Anywhere Office</span> <!-- Nome da empresa -->
+                    </a>
+                    <!--
+                    <div class="footer-contact pt-3">
+                        <p>A108 Adam Street</p>
+                        <p>New York, NY 535022</p>
+                        <p class="mt-3"><strong>Phone:</strong> <span>+1 5589 55488 55</span></p>
+                        <p><strong>Email:</strong> <span>info@example.com</span></p>
+                    </div>
+                     -->
+
+                </div>
+
+                <div class="links col-lg-3 col-md-6 footer-links"> <!-- Coluna para links úteis -->
+                    <ul>
+                        <h4>Links Úteis</h4> <!-- Título dos links -->
+                        <li><a href="/">Home</a></li> <!-- Link para a página inicial -->
+                        <li><a href="/#about-area">Sobre Nós</a></li> <!-- Link para a página sobre nós -->
+                        <li><a href="/#services-area">Nossos Serviços</a></li> <!-- Link para a página de serviços -->
+                        <li><a href="/#team-area">Nosso Time</a></li> <!-- Link para time -->
+                        <li><a href="/#contact-area">Contato</a></li> <!-- Link para contato -->
+                    </ul>
+                </div>
+
+                <div class="links col-lg-3 col-md-6 footer-links"> <!-- Coluna para serviços oferecidos -->
+                    <ul>
+                        <li><a href="/blog"><h4>Blog</h4></a></li> <!-- Título dos serviços -->
+                        <li><a href="/blog">Home Office</a></li> <!-- Serviço de design web -->
+                        <li><a href="/blog">Legislação</a></li> <!-- Serviço de desenvolvimento web -->
+                        <li><a href="/blog">Empresas</a></li> <!-- Serviço de gestão de produtos -->
+                        <li><a href="/blog">Tecnologia</a></li> <!-- Serviço de marketing -->
+                        <li><a href="/blog">Sustentabilidade</a></li> <!-- Serviço de design gráfico -->
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="copyright text-center"> <!-- Área de direitos autorais -->
+        <div class="container d-flex flex-column flex-lg-row justify-content-center justify-content-lg-between align-items-center"> <!-- Contêiner flexível -->
+            <div class="d-flex flex-column align-items-center align-items-lg-start"> <!-- Coluna para direitos autorais -->
+                <div>
+                    © Copyright <strong><span>AnywhereOffice</span></strong>. All Rights Reserved <!-- Direitos autorais -->
+                </div>
+                <div class="credits">
+                    Designed by <a href="https://newtonpaiva.br/">Alunos do Centro Universitário Newton Paiva</a> <!-- Créditos do design -->
+                </div>
+            </div>
+
+            <div class="social-links order-first order-lg-last mb-3 mb-lg-0"> <!-- Links para redes sociais -->
+                <a href=""><img src="assets/img/icons/instagram_2111463.png" alt="Icone Instagram"></a> <!-- Link para Instagram -->
+                <a href=""><img src="assets/img/icons/whatsapp_2504957.png" alt="Icone Whatsapp"></a> <!-- Link para WhatsApp -->
+                <a href=""><img src="assets/img/icons/linkedin_2504923.png" alt="Icone LinkedIn"></a> <!-- Link para LinkedIn -->
+                <a href=""><img src="assets/img/icons/gmail_2991144.png" alt="Icone Gmail"></a> <!-- Link para Gmail -->
+            </div>
+        </div>
+    </div>
+</footer>
+
+<!-- Main JS File -->
+<script src="assets/js/script.js"></script> <!-- Script personalizado -->
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script> <!-- Script do Bootstrap -->
 </body>
 </html>

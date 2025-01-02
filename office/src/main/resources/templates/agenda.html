@@ -4,59 +4,77 @@
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>AnyWhereOffice - Arquivos</title>
+    <title>AnyWhereOffice - Agenda</title>
+    <!-- Inclusão do CSS do Bootstrap para estilização -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
-</head>
+    <link rel="stylesheet" href="./assets/css/main.css"> <!-- CSS personalizado -->
+    <link rel="stylesheet" href="./assets/css/blog.css"> <!-- CSS personalizado -->
+
+    <!-- Inclusão de ícones do Google Fonts -->
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet"></head>
 <body>
-<nav class="navbar navbar-expand-lg bg-body-tertiary">
-    <div class="container-fluid">
-        <a class="navbar-brand" href="/">Anywhere Office</a>
-        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
-            <span class="navbar-toggler-icon"></span>
-        </button>
-        <div class="collapse navbar-collapse" id="navbarSupportedContent">
-            <ul class="navbar-nav me-auto mb-2 mb-lg-0">
-                <li class="nav-item">
-                    <a class="nav-link text-dark" href="/">Inicio</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link text-dark" href="/contact">Contato</a>
-                </li>
-            </ul>
-
-            <ul class="navbar-nav" sec:authorize="isAuthenticated()">
-                <li class="nav-item dropdown">
-                    <a class="nav-link dropdown-toggle text-dark" href="/" role="button" data-bs-toggle="dropdown">
-                        User
-                    </a>
-                    <ul class="dropdown-menu">
-                        <li><a class="dropdown-item" href="/perfil">Perfil</a></li>
-                        <li><a class="dropdown-item" href="/agenda">Agenda</a></li>
-                        <li><a class="dropdown-item" href="/arquivos">Arquivos</a></li>
+<header class="header-blog">
+    <div class="container" id="nav-container">
+        <!-- Navegação principal -->
+        <nav class="navbar navbar-expand-lg fixed-top">
+            <!-- Logo e link para a página inicial -->
+            <a class="navbar-brand" href="/">
+                <img id="logo" src="./assets/img/logo_any.png" alt="Anywhere Office"> Anywhere Office
+            </a>
+            <!-- Botão de toggle para menu em dispositivos menores -->
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent"
+                    aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse justify-content-end" id="navbarSupportedContent">
+                <div class="navbar-nav">
+                    <!-- Links de navegação principais -->
+                    <a class="nav-item nav-link" href="/">Inicio</a>
+                    <a class="nav-item nav-link" href="/#invite-area">Contato</a>
+                    <a class="nav-item nav-link" href="/blog">Blog</a>
+                </div>
+                <!-- Mostrar botões específicos com base na autenticação -->
+                <ul class="navbar-nav" sec:authorize="isAuthenticated()">
+                    <li class="nav-item dropdown">
+                        <!-- Menu dropdown para o usuário autenticado -->
+                        <a class="nav-link dropdown-toggle" href="/" role="button" data-bs-toggle="dropdown">
+                            User
+                        </a>
+                        <ul class="dropdown-menu">
+                            <li><a class="dropdown-item" href="/profile">Perfil</a></li>
+                            <li><a class="dropdown-item" href="/agenda">Agenda</a></li>
+                            <li><a class="dropdown-item" href="/arquivos">Arquivos</a></li>
+                        </ul>
+                    </li>
+                </ul>
+                <div class="buttons-bar">
+                    <!-- Botões de Registro e Login quando o usuário não está autenticado -->
+                    <ul class="navbar-nav" sec:authorize="!isAuthenticated()">
+                        <li class="nav-item">
+                            <a href="/companyRegister" class="btn btn-primary me-2">Registre-se</a>
+                        </li>
+                        <li class="nav-item">
+                            <a href="/login" class="btn btn-primary">Entrar</a>
+                        </li>
                     </ul>
-                </li>
-                <li class="nav-item">
-                    <form method="post" action="/logout">
-                        <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}" />
-                        <button type="submit" class="btn btn-danger">Logout</button>
-                    </form>
-                </li>
-            </ul>
-
-            <ul class="navbar-nav" sec:authorize="!isAuthenticated()">
-                <li class="nav-item">
-                    <a href="/register" class="btn btn-outline-primary me-2">Registre-se</a>
-                </li>
-                <li class="nav-item">
-                    <a href="/login" class="btn btn-primary">Entrar</a>
-                </li>
-            </ul>
-        </div>
+                    <!-- Botão de Logout apenas se o usuário estiver logado -->
+                    <ul class="navbar-nav" sec:authorize="isAuthenticated()">
+                        <li class="nav-item">
+                            <form method="post" action="/logout">
+                                <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}" />
+                                <button type="submit" class="btn btn-danger">Logout</button>
+                            </form>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </nav>
     </div>
-</nav>
-<div class="container mt-4">
+</header>
+<div class="container mt-4" style="margin-top: 100px; height: 100vh;">
     <h1>Agendamentos</h1>
-    <a href="/schedules/new" class="btn btn-primary mb-3">Criar Novo Agendamento</a>
+    <a href="/create" class="btn btn-primary mb-3" style="height: 50px;">Criar Novo Agendamento</a>
+
 
     <table class="table table-striped">
         <thead>
@@ -83,6 +101,30 @@
         </tbody>
     </table>
 </div>
+
+<!-- Footer -->
+<footer id="footer" class="footer dark-background"> <!-- Rodapé da página com fundo escuro -->
+
+    <div class="copyright text-center"> <!-- Área de direitos autorais -->
+        <div class="container d-flex flex-column flex-lg-row justify-content-center justify-content-lg-between align-items-center"> <!-- Contêiner flexível -->
+            <div class="d-flex flex-column align-items-center align-items-lg-start"> <!-- Coluna para direitos autorais -->
+                <div>
+                    © Copyright <strong><span>AnywhereOffice</span></strong>. All Rights Reserved <!-- Direitos autorais -->
+                </div>
+                <div class="credits">
+                    Designed by <a href="https://newtonpaiva.br/">Alunos do Centro Universitário Newton Paiva</a> <!-- Créditos do design -->
+                </div>
+            </div>
+
+            <div class="social-links order-first order-lg-last mb-3 mb-lg-0"> <!-- Links para redes sociais -->
+                <a href=""><img src="assets/img/icons/instagram_2111463.png" alt="Icone Instagram"></a> <!-- Link para Instagram -->
+                <a href=""><img src="assets/img/icons/whatsapp_2504957.png" alt="Icone Whatsapp"></a> <!-- Link para WhatsApp -->
+                <a href=""><img src="assets/img/icons/linkedin_2504923.png" alt="Icone LinkedIn"></a> <!-- Link para LinkedIn -->
+                <a href=""><img src="assets/img/icons/gmail_2991144.png" alt="Icone Gmail"></a> <!-- Link para Gmail -->
+            </div>
+        </div>
+    </div>
+</footer>
 
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
 </body>

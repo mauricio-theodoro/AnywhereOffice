@@ -1,0 +1,283 @@
+<!doctype html>
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml" xmlns:sec="http://www.thymeleaf.org/extras/spring-security"
+      xmlns:th="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Blog</title>
+
+    <!-- Inclusão do CSS do Bootstrap para estilização -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
+    <link rel="stylesheet" href="./assets/css/main.css"> <!-- CSS personalizado -->
+    <link rel="stylesheet" href="./assets/css/blog.css"> <!-- CSS personalizado -->
+
+    <!-- Inclusão de ícones do Google Fonts -->
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+
+    <!-- Inclusão de ícones do Bootstrap Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-icons/1.10.0/font/bootstrap-icons.min.css">
+
+</head>
+<body class="blog-details-page">
+    <header class="header-blog">
+        <div class="container" id="nav-container">
+            <!-- Navegação principal -->
+            <nav class="navbar navbar-expand-lg fixed-top">
+                <!-- Logo e link para a página inicial -->
+                <a class="navbar-brand" href="/">
+                    <img id="logo" src="assets/img/logo_any.png" alt="Anywhere Office"> Anywhere Office
+                </a>
+                <!-- Botão de toggle para menu em dispositivos menores -->
+                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent"
+                        aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+                <div class="collapse navbar-collapse justify-content-end" id="navbarSupportedContent">
+                    <div class="navbar-nav">
+                        <!-- Links de navegação principais -->
+                        <a class="nav-item nav-link" href="/">Inicio</a>
+                        <a class="nav-item nav-link" href="/#invite-area">Contato</a>
+                        <a class="nav-item nav-link" href="/blog">Blog</a>
+                    </div>
+                    <!-- Mostrar botões específicos com base na autenticação -->
+                    <ul class="navbar-nav" sec:authorize="isAuthenticated()">
+                        <li class="nav-item dropdown">
+                            <!-- Menu dropdown para o usuário autenticado -->
+                            <a class="nav-link dropdown-toggle" href="/" role="button" data-bs-toggle="dropdown">
+                                User
+                            </a>
+                            <ul class="dropdown-menu">
+                                <li><a class="dropdown-item" href="/profile">Perfil</a></li>
+                                <li><a class="dropdown-item" href="/agenda">Agenda</a></li>
+                                <li><a class="dropdown-item" href="/arquivos">Arquivos</a></li>
+                            </ul>
+                        </li>
+                    </ul>
+                    <div class="buttons-bar">
+                        <!-- Botões de Registro e Login quando o usuário não está autenticado -->
+                        <ul class="navbar-nav" sec:authorize="!isAuthenticated()">
+                            <li class="nav-item">
+                                <a href="companyRegister.html" class="btn btn-primary me-2">Registre-se</a>
+                            </li>
+                            <li class="nav-item">
+                                <a href="login.html" class="btn btn-primary">Entrar</a>
+                            </li>
+                        </ul>
+                        <!-- Botão de Logout apenas se o usuário estiver logado -->
+                        <ul class="navbar-nav" sec:authorize="isAuthenticated()">
+                            <li class="nav-item">
+                                <form method="post" action="/logout">
+                                    <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}" />
+                                    <button type="submit" class="btn btn-danger">Logout</button>
+                                </form>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </nav>
+        </div>
+    </header>
+    <!-- Main -->
+    <main class="main">
+
+        <!-- Page Title -->
+        <div class="page-title" data-aos="fade">
+            <div class="heading">
+                <div class="container">
+                    <div class="row d-flex justify-content-center text-center">
+                        <div class="col-lg-8">
+                            <h1>O que é Home Office?</h1>
+                            <p class="mb-0">Você sabe o que é home office? Ter o escritório na sala ao lado, longe do congestionamento ou da lotação do transporte público, tomar café da manhã com calma, dormir uns minutinhos a mais ou, quem sabe, até trabalhar de pijama: esse é o sonho de 49% dos funcionários brasileiros.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <nav class="breadcrumbs">
+                <div class="container">
+                    <ol>
+                        <li><a href="index.html">Home</a></li>
+                        <li class="current">Blog Details</li>
+                    </ol>
+                </div>
+            </nav>
+        </div><!-- End Page Title -->
+
+        <div class="container">
+            <div class="row">
+
+                <div class="col-lg-8">
+
+                    <!-- Blog Details Section -->
+                    <section id="blog-details" class="blog-details section">
+                        <div class="container">
+
+                            <article class="article">
+
+                                <div class="img">
+                                    <img src="assets/img/sentado-sofa.jpg" alt="" class="img-fluid">
+                                </div>
+
+                                <h2 class="title">O que é home office?</h2>
+
+                                <div class="meta-top">
+                                    <ul>
+                                        <li class="d-flex align-items-center"><i class="bi bi-person"></i> <a href="post01.html">Admin</a></li>
+                                        <li class="d-flex align-items-center"><i class="bi bi-clock"></i> <a href="post01.html"><time datetime="2024-11-15">Nov 15, 2024</time></a></li>
+                                        <li class="d-flex align-items-center"><i class="bi bi-chat-dots"></i> <a href="post01.html">0 Comments</a></li>
+                                    </ul>
+                                </div><!-- End meta top -->
+
+                                <div class="content">
+                                    <p>
+                                        Em uma era de mobilidade nas empresas, não somente as pessoas, mas o próprio mundo corporativo se abre para a possibilidade do trabalho remoto ou home office, termo mais popular em inglês. Isso porque, atualmente, quase todos os passos das pessoas físicas e jurídicas ocorrem via computação em nuvem, de forma que não é mais tão necessário aglutinar os colaboradores no mesmo espaço físico para produzir.
+                                    </p>
+
+                                    <blockquote>
+                                        <p>
+                                            "Na verdade, o raciocínio é inverso: inúmeras pesquisas mostram que a produtividade de quem atua em home office é cerca de 13% maior."
+                                        </p>
+                                    </blockquote>
+
+                                    <p>
+                                        Além disso, com a força de trabalho fora da empresa, reduz-se a pressão por espaço, os custos com energia elétrica e os materiais de escritório. Parece bom para todos, certo?
+                                    </p>
+
+                                    <h3>Afinal, o que é home office?</h3>
+                                    <p>
+                                        Home office é uma forma de relação de trabalho na qual o colaborador atua a distância. Para isso, faz uso dos meios computacionais para produzir junto à empresa, como se estivesse presente fisicamente no escritório.
+                                    </p>
+                                    <p>
+                                        Com a modernização das redes móveis e da infraestrutura de banda larga, a popularização da computação em nuvem e o surgimento dos modernos sistemas de gestão empresariais, tornou-se possível ao colaborador atuar da residência dele, no mínimo, com a mesma eficiência do trabalho presencial.
+                                    </p>
+
+                                    <div class="img">
+                                        <img src="assets/img/office-complete.jpg" alt="" class="img-fluid">
+                                    </div>
+
+                                    <h3>Quais são os benefícios do home office?</h3>
+                                    <p>
+                                        Como você já deve ter percebido, o trabalho remoto é um instrumento valioso de aumento de produtividade global na empresa. Além disso, colabora para uma melhora no clima organizacional.
+                                    </p>
+                                    <p>
+                                        Com trabalhadores mais ativos e mais satisfeitos, reduzem-se indicadores como turnover (rotatividade), absenteísmo, retrabalho, entre outros. É por isso que tantas companhias e colaboradores têm tirado proveito do home office. Em essência, essa descentralização do trabalho traz à empresa:
+                                    </p>
+
+                                    <ul>
+                                        <li>Aumento de produtividade;</li>
+                                        <li>Redução dos erros;</li>
+                                        <li>Elevação na qualidade das entregas;</li>
+                                        <li>Melhora no clima organizacional;</li>
+                                        <li>Diminuição de custos;</li>
+                                        <li>Redução dos conflitos internos;</li>
+                                        <li>Aumento do engajamento;</li>
+                                        <li>Atração de talentos da geração Z;</li>
+                                        <li>Capacitação do colaborador para se tornar mais autônomo e capaz de resolver problemas.</li>
+                                    </ul>
+
+                                    <p>
+                                        E traz ao empregado:
+                                    </p>
+
+                                    <ul>
+                                        <li>Elevação da qualidade de vida;</li>
+                                        <li>Aumento da autoestima profissional;</li>
+                                        <li>Ampliação do tempo de convívio familiar;</li>
+                                        <li>Redução dos níveis de estresse;</li>
+                                        <li>Ganho de autonomia e senso de responsabilidade;</li>
+                                        <li>Modulação da autodisciplina.</li>
+                                    </ul>
+
+                                </div><!-- End post content -->
+
+                                <div class="meta-bottom">
+                                    <i class="bi bi-folder"></i>
+                                    <ul class="cats">
+                                        <li><a href="#">Trabalho Remoto</a></li>
+                                    </ul>
+
+                                    <i class="bi bi-tags"></i>
+                                    <ul class="tags">
+                                        <li><a href="#">Home Office</a></li>
+                                        <li><a href="#">Produtividade</a></li>
+                                        <li><a href="#">Carreira</a></li>
+                                    </ul>
+                                </div><!-- End meta bottom -->
+                            </article>
+                        </div>
+                    </section>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <!-- Footer -->
+    <footer id="footer" class="footer dark-background"> <!-- Rodapé da página com fundo escuro -->
+
+        <div class="footer-top"> <!-- Topo do rodapé -->
+            <div class="container"> <!-- Contêiner do rodapé -->
+                <div class="row gy-4"> <!-- Linha com espaçamento entre colunas -->
+                    <div class="col-lg-4 col-md-6 footer-about"> <!-- Coluna para informações sobre a empresa -->
+                        <a href="index.html" class="logo d-flex align-items-center"> <!-- Logo da empresa -->
+                            <span class="sitename">Anywhere Office</span> <!-- Nome da empresa -->
+                        </a>
+                        <!--
+                        <div class="footer-contact pt-3">
+                            <p>A108 Adam Street</p>
+                            <p>New York, NY 535022</p>
+                            <p class="mt-3"><strong>Phone:</strong> <span>+1 5589 55488 55</span></p>
+                            <p><strong>Email:</strong> <span>info@example.com</span></p>
+                        </div>
+                         -->
+
+                    </div>
+
+                    <div class="links col-lg-3 col-md-6 footer-links"> <!-- Coluna para links úteis -->
+                        <ul>
+                            <h4>Links Úteis</h4> <!-- Título dos links -->
+                            <li><a href="#">Home</a></li> <!-- Link para a página inicial -->
+                            <li><a href="index.html#about-area">Sobre Nós</a></li> <!-- Link para a página sobre nós -->
+                            <li><a href="index.html#services-area">Nossos Serviços</a></li> <!-- Link para a página de serviços -->
+                            <li><a href="index.html#team-area">Nosso Time</a></li> <!-- Link para time -->
+                            <li><a href="index.html#contact-area">Contato</a></li> <!-- Link para contato -->
+                        </ul>
+                    </div>
+
+                    <div class="links col-lg-3 col-md-6 footer-links"> <!-- Coluna para serviços oferecidos -->
+                        <ul>
+                            <li><a href="/blog"><h4>Blog</h4></a></li> <!-- Título dos serviços -->
+                            <li><a href="blog.html">Home Office</a></li> <!-- Serviço de design web -->
+                            <li><a href="blog.html">Legislação</a></li> <!-- Serviço de desenvolvimento web -->
+                            <li><a href="blog.html">Empresas</a></li> <!-- Serviço de gestão de produtos -->
+                            <li><a href="blog.html">Tecnologia</a></li> <!-- Serviço de marketing -->
+                            <li><a href="blog.html">Sustentabilidade</a></li> <!-- Serviço de design gráfico -->
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="copyright text-center"> <!-- Área de direitos autorais -->
+            <div class="container d-flex flex-column flex-lg-row justify-content-center justify-content-lg-between align-items-center"> <!-- Contêiner flexível -->
+                <div class="d-flex flex-column align-items-center align-items-lg-start"> <!-- Coluna para direitos autorais -->
+                    <div>
+                        © Copyright <strong><span>AnywhereOffice</span></strong>. All Rights Reserved <!-- Direitos autorais -->
+                    </div>
+                    <div class="credits">
+                        Designed by <a href="https://newtonpaiva.br/">Alunos do Centro Universitário Newton Paiva</a> <!-- Créditos do design -->
+                    </div>
+                </div>
+
+                <div class="social-links order-first order-lg-last mb-3 mb-lg-0"> <!-- Links para redes sociais -->
+                    <a href=""><img src="assets/img/icons/instagram_2111463.png" alt="Icone Instagram"></a> <!-- Link para Instagram -->
+                    <a href=""><img src="assets/img/icons/whatsapp_2504957.png" alt="Icone Whatsapp"></a> <!-- Link para WhatsApp -->
+                    <a href=""><img src="assets/img/icons/linkedin_2504923.png" alt="Icone LinkedIn"></a> <!-- Link para LinkedIn -->
+                    <a href=""><img src="assets/img/icons/gmail_2991144.png" alt="Icone Gmail"></a> <!-- Link para Gmail -->
+                </div>
+            </div>
+        </div>
+    </footer>
+    <!-- Main JS File -->
+    <script src="assets/js/script.js"></script> <!-- Script personalizado -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script> <!-- Script do Bootstrap -->
+</body>
+</html>
