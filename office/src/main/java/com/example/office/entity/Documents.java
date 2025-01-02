@@ -22,6 +22,7 @@ public class Documents {
 
     @Lob
     private byte[] content;
+
     public Documents(Long id, String name, long size){
         super();
         this.id = id;

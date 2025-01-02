@@ -33,13 +33,13 @@ public class CompanyController {
 
     @PostMapping("/companyRegister")
     public String register(Model model, @Valid @ModelAttribute CompanyRegisterDTO registerDTO, BindingResult result) {
-        if (!registerDTO.getSenha().equals(registerDTO.getConfirmSenha())) {
+        if (!registerDTO.getPassword().equals(registerDTO.getConfirmPassword())) {
             result.addError(new FieldError("companyRegisterDTO", "confirmSenha", "Senhas não conferem"));
         }
 
-        Company existingCompany = companyRepo.findByCnpj(registerDTO.getCnpj());
+        Company existingCompany = companyRepo.findByEmail(registerDTO.getEmail());
         if (existingCompany != null) {
-            result.addError(new FieldError("companyRegisterDTO", "cnpj", "CNPJ já está sendo usado"));
+            result.addError(new FieldError("companyRegisterDTO", "email", "EMAIL já está sendo usado"));
         }
 
         if (result.hasErrors()) {
@@ -54,7 +54,7 @@ public class CompanyController {
             newCompany.setName(registerDTO.getName());
             newCompany.setAddress(registerDTO.getAddress());
             newCompany.setCountry(registerDTO.getCountry());
-            newCompany.setPassword(bCryptEncoder.encode(registerDTO.getSenha())); // Criptografa a senha
+            newCompany.setPassword(bCryptEncoder.encode(registerDTO.getPassword())); // Criptografa a senha
             newCompany.setCreatedAt(LocalDateTime.now());
 
             companyRepo.save(newCompany);

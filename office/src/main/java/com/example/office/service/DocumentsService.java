@@ -29,4 +29,7 @@ public class DocumentsService {
 
         return documentsRepository.save(documents);
     }
+    public void deleteDocument(Long id) {
+        documentsRepository.deleteById(id);
+    }
 }

@@ -25,9 +25,9 @@ public class CustomUserDetailsService implements UserDetailsService {
     private AppUserRepository appUserRepository;
 
     @Override
-    public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
+    public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {
         // Tenta encontrar a empresa pelo CNPJ
-        Company company = companyRepository.findByCnpj(username);
+        Company company = companyRepository.findByEmail(email);
         if (company != null) {
             // Definindo a role padrão para empresas como "ADMIN"
             List<GrantedAuthority> authorities = new ArrayList<>();
@@ -41,7 +41,7 @@ public class CustomUserDetailsService implements UserDetailsService {
         }
 
         // Se não encontrar, tenta encontrar um usuário pelo email
-        AppUser user = appUserRepository.findByEmail(username);
+        AppUser user = appUserRepository.findByEmail(email);
         if (user != null) {
             // Definindo a role do usuário
             List<GrantedAuthority> authorities = new ArrayList<>();

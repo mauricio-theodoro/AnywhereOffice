@@ -14,7 +14,7 @@ public class Company {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(nullable = false, unique = true, length = 14)
+    @Column(nullable = false, unique = true, length = 18)
     private String cnpj;
 
     @Column(nullable = false, length = 255)
@@ -26,6 +26,9 @@ public class Company {
     @Column(length = 100)
     private String country;
 
+    @Column(nullable = false, unique = true)
+    private String email; // Novo campo email com unicidade garantida
+
     @Column(name = "created_at", nullable = false, updatable = false)
     private LocalDateTime createdAt;
 
@@ -36,7 +39,7 @@ public class Company {
     private String password;
 
     @Column(nullable = false, columnDefinition = "VARCHAR(50) DEFAULT 'ADMIN'")
-    private String role = "ADMIN"; // Nova propriedade role com valor padrão
+    private String role = "ADMIN"; // Propriedade role com valor padrão
 
     @PrePersist
     protected void onCreate() {
@@ -85,6 +88,14 @@ public class Company {
         this.country = country;
     }
 
+    public String getEmail() {
+        return email; // Getter para o email
+    }
+
+    public void setEmail(String email) {
+        this.email = email; // Setter para o email
+    }
+
     public LocalDateTime getCreatedAt() {
         return createdAt;
     }
@@ -111,10 +122,10 @@ public class Company {
     }
 
     public String getRole() {
-        return role; // Getter para a role
+        return role;
     }
 
     public void setRole(String role) {
-        this.role = role; // Setter para a role
+        this.role = role;
     }
 }

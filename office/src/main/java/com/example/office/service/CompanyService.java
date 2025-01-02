@@ -15,7 +15,7 @@ public class CompanyService {
         return companyRepository.save(company);
     }
 
-    public Company findCompanyByCnpj(String cnpj) {
-        return companyRepository.findByCnpj(cnpj);
+    public Company findCompanyByEmail(String email) {
+        return companyRepository.findByEmail(email);
     }
 }

@@ -17,8 +17,8 @@ public class CompanyDetailsService implements UserDetailsService {
     private CompanyRepository companyRepository;
 
     @Override
-    public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-        Company company = companyRepository.findByCnpj(username);
+    public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {
+        Company company = companyRepository.findByEmail(email);
         if (company == null) {
             throw new UsernameNotFoundException("Company not found");
         }

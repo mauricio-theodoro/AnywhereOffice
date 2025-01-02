@@ -1,5 +1,6 @@
 package com.example.office.controller;
 
+import com.example.office.model.Company;
 import com.example.office.model.Schedule;
 import com.example.office.model.AppUser;
 import com.example.office.service.ScheduleService;
@@ -17,7 +18,7 @@ import java.util.List;
 import java.util.Optional;
 
 @Controller
-@RequestMapping("/schedules")
+@RequestMapping("/agenda")
 public class ScheduleController {
 
     @Autowired
@@ -26,20 +27,20 @@ public class ScheduleController {
     @Autowired
     private AppUserService appUserService;
 
-    // Listar todos os agendamentos
-    @GetMapping
+    // Listar todos os agendamentos do usuário logado
+    @GetMapping("")
     public String listSchedules(Model model, Principal principal) {
         AppUser currentUser = appUserService.findByEmail(principal.getName());
         List<Schedule> schedules = scheduleService.findByUserId(currentUser.getId());
         model.addAttribute("schedules", schedules);
-        return "agenda"; // Renderiza a página agenda.html
+        return "agenda";
     }
 
-    // Exibir o formulário de criação de agendamento
-    @GetMapping("/new")
+    // Exibir o formulário de criação de um novo agendamento
+    @GetMapping("/create")
     public String showCreateForm(Model model) {
         model.addAttribute("schedule", new Schedule());
-        return "schedules/create"; // Página com o formulário de criação
+        return "agenda/create";
     }
 
     // Criar um novo agendamento
@@ -47,14 +48,22 @@ public class ScheduleController {
     public String createSchedule(@Validated @ModelAttribute Schedule schedule,
                                  Principal principal,
                                  RedirectAttributes redirectAttributes) {
+        // Obter o usuário atual a partir do email
         AppUser currentUser = appUserService.findByEmail(principal.getName());
         schedule.setUser(currentUser);
+
+        // Associar a empresa do usuário ao agendamento
+        Company userCompany = currentUser.getCompany();
+        schedule.setCompany(userCompany);
+
+        // Definir a data de criação
         schedule.setCreatedAt(LocalDateTime.now());
 
+        // Salvar o agendamento
         scheduleService.save(schedule);
 
         redirectAttributes.addFlashAttribute("message", "Agendamento criado com sucesso!");
-        return "redirect:/schedules"; // Redireciona para a lista de agendamentos
+        return "redirect:/agenda";
     }
 
     // Exibir o formulário de edição de um agendamento específico
@@ -63,9 +72,9 @@ public class ScheduleController {
         Optional<Schedule> scheduleOpt = scheduleService.findById(id);
         if (scheduleOpt.isPresent()) {
             model.addAttribute("schedule", scheduleOpt.get());
-            return "schedules/edit"; // Página com o formulário de edição
+            return "agenda/edit";
         } else {
-            return "redirect:/schedules"; // Redireciona se o agendamento não for encontrado
+            return "redirect:/agenda";
         }
     }
 
@@ -73,10 +82,15 @@ public class ScheduleController {
     @PostMapping("/update/{id}")
     public String updateSchedule(@PathVariable Long id,
                                  @Validated @ModelAttribute Schedule updatedSchedule,
-                                 RedirectAttributes redirectAttributes) {
+                                 RedirectAttributes redirectAttributes,
+                                 Principal principal) {
         Optional<Schedule> scheduleOpt = scheduleService.findById(id);
         if (scheduleOpt.isPresent()) {
             Schedule existingSchedule = scheduleOpt.get();
+            AppUser currentUser = appUserService.findByEmail(principal.getName());
+            existingSchedule.setUser(currentUser);
+            Company userCompany = currentUser.getCompany();
+            existingSchedule.setCompany(userCompany);
             existingSchedule.setTitle(updatedSchedule.getTitle());
             existingSchedule.setNote(updatedSchedule.getNote());
             existingSchedule.setDate(updatedSchedule.getDate());
@@ -85,7 +99,7 @@ public class ScheduleController {
             scheduleService.save(existingSchedule);
             redirectAttributes.addFlashAttribute("message", "Agendamento atualizado com sucesso!");
         }
-        return "redirect:/schedules"; // Redireciona para a lista de agendamentos
+        return "redirect:/agenda";
     }
 
     // Deletar um agendamento
@@ -93,15 +107,15 @@ public class ScheduleController {
     public String deleteSchedule(@PathVariable Long id, RedirectAttributes redirectAttributes) {
         scheduleService.deleteById(id);
         redirectAttributes.addFlashAttribute("message", "Agendamento excluído com sucesso!");
-        return "redirect:/schedules"; // Redireciona para a lista de agendamentos
+        return "redirect:/agenda";
     }
 
-    // Filtrar agendamentos por data (exemplo de filtro adicional)
+    // Filtrar agendamentos por data
     @GetMapping("/filter")
     public String filterSchedules(@RequestParam("date") LocalDateTime date, Model model, Principal principal) {
         AppUser currentUser = appUserService.findByEmail(principal.getName());
         List<Schedule> filteredSchedules = scheduleService.findByUserIdAndDate(currentUser.getId(), date);
         model.addAttribute("schedules", filteredSchedules);
-        return "agenda"; // Mesma página de agenda, mas agora com os resultados filtrados
+        return "agenda";
     }
 }

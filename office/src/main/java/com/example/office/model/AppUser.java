@@ -31,13 +31,18 @@ public class AppUser {
 
     private LocalDate birthday;
 
+    // Relacionamento com a entidade Company (Muitos usuários podem pertencer a uma empresa)
+    @ManyToOne
+    @JoinColumn(name = "company_id")  // Este é o nome da coluna na tabela 'users' que vai armazenar a referência da empresa
+    private Company company;  // A referência à empresa associada ao usuário
+
     // Construtor padrão
     public AppUser() {
         this.createdAt = LocalDateTime.now(); // Define a data de criação como agora por padrão
     }
 
     // Construtor completo (opcional)
-    public AppUser(String firstName, String lastName, String email, String phone, String address, String password, String role, LocalDate birthday) {
+    public AppUser(String firstName, String lastName, String email, String phone, String address, String password, String role, LocalDate birthday, Company company) {
         this.firstName = firstName;
         this.lastName = lastName;
         this.email = email;
@@ -47,6 +52,7 @@ public class AppUser {
         this.role = role;
         this.createdAt = LocalDateTime.now(); // Define a data de criação como agora
         this.birthday = birthday;
+        this.company = company;  // Inicializa a empresa associada
     }
 
     // Getters e setters
@@ -130,6 +136,16 @@ public class AppUser {
         this.birthday = birthday;
     }
 
+    // Novo método para acessar a empresa associada ao usuário
+    public Company getCompany() {
+        return company;
+    }
+
+    // Novo método para associar uma empresa ao usuário
+    public void setCompany(Company company) {
+        this.company = company;
+    }
+
     @Override
     public String toString() {
         return "AppUser{" +
@@ -142,6 +158,7 @@ public class AppUser {
                 ", role='" + role + '\'' +
                 ", createdAt=" + createdAt +
                 ", birthday=" + birthday +
+                ", company=" + company +  // Exibe a empresa associada
                 '}';
     }
 }

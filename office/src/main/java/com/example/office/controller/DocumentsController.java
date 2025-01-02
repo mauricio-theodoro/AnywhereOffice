@@ -43,6 +43,18 @@ public class DocumentsController {
         return "arquivos"; // Nome do arquivo HTML sem a extensão
     }
 
+    // Método para excluir um arquivo
+    @GetMapping("/excluir")
+    public String excluirDocumento(@RequestParam("id") Long id, RedirectAttributes redirectAttributes) {
+        try {
+            documentsService.deleteDocument(id);
+            redirectAttributes.addFlashAttribute("Message", "Arquivo excluído com sucesso!");
+        } catch (Exception e) {
+            redirectAttributes.addFlashAttribute("Error", "Erro ao excluir o arquivo: " + e.getMessage());
+        }
+        return "redirect:/arquivos";
+    }
+
     @PostMapping("/upload")
     public String uploadFile(@RequestParam("documents") MultipartFile multipartFile,
                              RedirectAttributes redirectAttributes) {
